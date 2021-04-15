@@ -12,13 +12,9 @@ public struct Money {
     let amount: Int
     let currency: String
     
-    init?(amount amt: Int, currency curr: String) {
-        if (curr == "USD" || curr == "GBP" || curr == "EUR" || curr == "CAN" ) {
-            amount = amt
-            currency = curr
-        } else {
-            return nil
-        }
+    init(amount amt: Int, currency curr: String) {
+        amount = amt
+        currency = curr
     }
     
     static func toUSD(_ amt: Double, _ currency: String) -> Double {
@@ -50,19 +46,19 @@ public struct Money {
             break
         }
         newAmt.round()
-        return Money(amount: Int(newAmt), currency: newCurrency)!
+        return Money(amount: Int(newAmt), currency: newCurrency)
     }
     
     
     
     func add(_ toAdd: Money) -> Money {
         let converted = self.convert(toAdd.currency)
-        return Money(amount: converted.amount + toAdd.amount, currency: toAdd.currency)!
+        return Money(amount: converted.amount + toAdd.amount, currency: toAdd.currency)
     }
     
     func subtract(_ toSubtract: Money) -> Money {
         let converted = self.convert(toSubtract.currency)
-        return Money(amount: converted.amount - toSubtract.amount, currency: toSubtract.currency)!
+        return Money(amount: converted.amount - toSubtract.amount, currency: toSubtract.currency)
     }
 
 }
