@@ -59,6 +59,12 @@ public struct Money {
         let converted = self.convert(toAdd.currency)
         return Money(amount: converted.amount + toAdd.amount, currency: toAdd.currency)!
     }
+    
+    func subtract(_ toSubtract: Money) -> Money {
+        let converted = self.convert(toSubtract.currency)
+        return Money(amount: converted.amount - toSubtract.amount, currency: toSubtract.currency)!
+    }
+
 }
 
 ////////////////////////////////////
