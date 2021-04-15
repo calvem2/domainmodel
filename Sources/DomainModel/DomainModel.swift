@@ -49,8 +49,6 @@ public struct Money {
         return Money(amount: Int(newAmt), currency: newCurrency)
     }
     
-    
-    
     func add(_ toAdd: Money) -> Money {
         let converted = self.convert(toAdd.currency)
         return Money(amount: converted.amount + toAdd.amount, currency: toAdd.currency)
@@ -115,8 +113,20 @@ public class Person {
     var firstName: String
     var lastName: String
     var age: Int
-    var job: Job?
-    var spouse: Person?
+    var job: Job? {
+        didSet {
+            if (age < 16) {
+                job = nil
+            }
+        }
+    }
+    var spouse: Person? {
+        didSet {
+            if (age < 18) {
+                spouse = nil
+            }
+        }
+    }
     
     init(firstName: String, lastName: String, age: Int) {
         self.firstName = firstName
@@ -127,9 +137,7 @@ public class Person {
     }
     
     func toString() -> String {
-//        [Person: firstName:Ted lastName:Neward age:45 job:nil spouse:nil]
-//        let res = "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(self.job) spouse:\(self.spouse)]";
-        return ""
+        return "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(self.job?.title ?? "nil") spouse:\(self.spouse?.toString() ?? "nil")]"
     }
     
 }
