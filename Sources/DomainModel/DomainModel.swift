@@ -149,14 +149,27 @@ public class Family {
     var members: Array<Person>
     
     init(spouse1: Person, spouse2: Person) {
-        members = [spouse1, spouse2]
+        members = []
+        if (spouse1.spouse == nil && spouse2.spouse == nil) {
+            members = [spouse1, spouse2]
+            spouse1.spouse = spouse2
+            spouse2.spouse = spouse1
+        }
     }
     
-    func haveChild(_ child: Person) {
-        
+    func haveChild(_ child: Person) -> Bool {
+        if (members.count == 2 && (members[0].age > 21 || members[1].age > 21)) {
+            members.append(child)
+            return true
+        }
+        return false
     }
     
     func householdIncome() -> Int {
-        return -1
+        var income = 0;
+        for person in members {
+            income += person.job?.calculateIncome(2000) ?? 0
+        }
+        return income
     }
 }
