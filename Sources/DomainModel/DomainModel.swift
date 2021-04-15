@@ -17,9 +17,24 @@ public struct Money {
         currency = curr
     }
     
+    static func toUSD(_ amt: Double, _ currency: String) -> Double {
+        var usd: Double = amt;
+        switch currency {
+        case "GBP":
+            usd = amt * 2.0
+        case "EUR":
+            usd = amt * 2.0/3.0
+        case "CAN":
+            usd = amt * 4.0/5.0
+        default:
+            break
+        }
+        usd.round();
+        return usd
+    }
+    
     func convert(_ newCurrency: String) -> Money {
-//        var newAmt: Double = Double(convert("USD").amount)
-        var newAmt = Double(self.amount)
+        var newAmt = Money.toUSD(Double(self.amount), self.currency)
         switch newCurrency {
         case "GBP":
             newAmt = newAmt * 0.5
@@ -34,8 +49,11 @@ public struct Money {
         return Money(amount: Int(newAmt), currency: newCurrency)
     }
     
+    
+    
     func add(_ toAdd: Money) -> Money {
-        return self
+        let converted = self.convert(toAdd.currency)
+        return Money(amount: converted.amount + toAdd.amount, currency: toAdd.currency)
     }
 }
 
