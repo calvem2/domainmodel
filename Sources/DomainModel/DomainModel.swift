@@ -29,7 +29,6 @@ public struct Money {
         default:
             break
         }
-        usd.round();
         return usd
     }
     
@@ -37,11 +36,11 @@ public struct Money {
         var newAmt = Money.toUSD(Double(self.amount), self.currency)
         switch newCurrency {
         case "GBP":
-            newAmt = newAmt * 0.5
+            newAmt *= 0.5
         case "EUR":
-            newAmt = newAmt * 1.5
+            newAmt *= 1.5
         case "CAN":
-            newAmt = newAmt * 1.25
+            newAmt *= 1.25
         default:
             break
         }
@@ -83,14 +82,18 @@ public class Job {
         case .Salary (let salary):
             return Int(salary)
         case .Hourly (let wage):
-            return Int(wage * Double(hours))
+            var income = wage * Double(hours)
+            income.round()
+            return Int(income)
         }
     }
     
     func raise(byAmount: Double) {
         switch self.type {
         case .Salary (let salary):
-            self.type = JobType.Salary(UInt(Double(salary) + byAmount))
+            var newSalary = Double(salary) + byAmount
+            newSalary.round()
+            self.type = JobType.Salary(UInt(newSalary))
         case .Hourly (let wage):
             self.type = JobType.Hourly(wage + byAmount)
         }
@@ -99,7 +102,9 @@ public class Job {
     func raise(byPercent: Double) {
         switch self.type {
         case .Salary (let salary):
-            self.type = JobType.Salary(UInt(Double(salary) + Double(salary) * byPercent))
+            var newSalary = Double(salary) + Double(salary) * byPercent
+            newSalary.round()
+            self.type = JobType.Salary(UInt(newSalary))
         case .Hourly (let wage):
             self.type = JobType.Hourly(wage + wage * byPercent)
         }
@@ -123,6 +128,7 @@ public class Person {
     var spouse: Person? {
         didSet {
             if (age < 18) {
+                spouse?.spouse = nil
                 spouse = nil
             }
         }
